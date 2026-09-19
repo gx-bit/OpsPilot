@@ -19,6 +19,5 @@ management:
       exposure:
         include: health,info,metrics,prometheus
 opspilot:
-  agent-base-url: ${AGENT_BASE_URL:http://localhost:8000}
+  agent-base-url: ${AGENT_BASE_URL:http://127.0.0.1:8000}
   internal-api-key: ${INTERNAL_API_KEY:change-me-in-production}
-

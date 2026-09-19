@@ -1,11 +1,12 @@
 package com.opspilot.ticket;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-@Service @RequiredArgsConstructor
+@Service @RequiredArgsConstructor @Slf4j
 public class TicketService {
     private final TicketRepository repository;
     private final AgentClient agentClient;
@@ -24,6 +25,7 @@ public class TicketService {
             ticket.setAiSummary(result.summary());
             ticket.setAiSuggestion(result.suggestion());
         } catch (RuntimeException ex) {
+            log.warn("Agent triage failed for ticket {}", ticket.getId(), ex);
             ticket.setAiSummary("Agent 暂时不可用，工单已保存并等待人工分诊。");
         }
         return repository.save(ticket);
@@ -37,4 +39,3 @@ public class TicketService {
         try { return Enum.valueOf(type, value); } catch (Exception ignored) { return fallback; }
     }
 }
-
